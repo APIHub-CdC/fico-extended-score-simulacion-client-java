@@ -1,6 +1,6 @@
-# Simulación del Reporte de Crédito Consolidado con FICO® Score y Prevención de Lavado de Dinero
+# Simulación de FICO Extended Score
 
-Simula el reporte del historial crediticio; el cumplimiento de pago de los compromisos que la persona ha adquirido con entidades financieras, no financieras e instituciones comerciales que dan crédito o participan en actividades afines al crédito; y filtra contra listas de cumplimiento para Prevención de Lavado de Dinero. 
+Simula la API de FICO Extended Score, la cual califica el nivel de cumplimiento de pago de un individuo considerando al grupo de personas con las que comparte domicilio.
 
 ## Requisitos
 
@@ -47,10 +47,9 @@ Es importante contar con el setUp() que se encargará de inicializar la url. Mod
 public void setUp() {
 	this.apiClient = api.getApiClient();
 	this.apiClient.setBasePath("the_url");
-	OkHttpClient okHttpClient = new OkHttpClient()
-		.newBuilder()
-		.readTimeout(30, TimeUnit.SECONDS)
-		.build();
+	OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+            .readTimeout(30, TimeUnit.SECONDS)
+            .build();
 	apiClient.setHttpClient(okHttpClient);
 }
 ```
@@ -60,79 +59,61 @@ En el archivo **ApiTest**, que se encuentra en ***src/test/java/io/ApiTest/clien
 ```java
 @Test
 public void getReporteTest() throws ApiException {
-
+	
 	String xApiKey = "your_api_key";
-	Boolean xFullReport = false;
-
-	PersonaPeticion persona = new PersonaPeticion();
-	DomicilioPeticion domicilio = new DomicilioPeticion();
-	try {
-		persona.setApellidoPaterno("ROBERTO");
-		persona.setApellidoMaterno("SAHAGUN");
+    
+    Peticion peticion = null;
+    Persona persona = null;
+    Domicilio domicilio = null;
+    
+    try {
+    	
+    	peticion = new Peticion();
+    	persona = new Persona();
+    	domicilio = new Domicilio();
+    	
+    	peticion.setFolio("1235");
+    	
+		persona.setApellidoPaterno("OLIVOS");
+		persona.setApellidoMaterno("JIMENEZ");
 		persona.setApellidoAdicional(null);
-		persona.setPrimerNombre("ZARAGOZA");
-		persona.setSegundoNombre(null);
-		persona.setFechaNacimiento("2001-01-01");
-		persona.setRFC("SAZR010101");
+		persona.setNombres("HECTOR");
+		persona.setFechaNacimiento("1966-05-13");
+		persona.setRFC("CUPU800825569");
 		persona.setCURP(null);
-		persona.setNacionalidad("MX");
+		persona.setNacionalidad(null);
 		persona.setResidencia(null);
 		persona.setEstadoCivil(null);
 		persona.setSexo(null);
-		persona.setClaveElectorIFE(null);
 		persona.setNumeroDependientes(null);
 		persona.setFechaDefuncion(null);
-		persona.setDomicilio(null);
-
-		domicilio.setDireccion("HIDALGO 32");
-		domicilio.setColoniaPoblacion("CENTRO");
-		domicilio.setDelegacionMunicipio("LA BARCA");
-		domicilio.setCiudad("BENITO JUAREZ");
-		domicilio.setEstado(CatalogoEstados.JAL);
-		domicilio.setCP("47917");
+		
+		domicilio.setDireccion("san joaquin");
+		domicilio.setColoniaPoblacion("el arenal");
+		domicilio.setDelegacionMunicipio("iztapalapa");
+		domicilio.setCiudad("mexico");
+		domicilio.setEstado(CatalogoEstados.CDMX);
+		domicilio.setCP("12345");
 		domicilio.setFechaResidencia(null);
 		domicilio.setNumeroTelefono(null);
 		domicilio.setTipoDomicilio(null);
 		domicilio.setTipoAsentamiento(null);
-
+		domicilio.setFechaRegistroDomicilio(null);
+		domicilio.setTipoAltaDomicilio(null);
+		domicilio.setIdDomicilio(null);
+    	
 		persona.setDomicilio(domicilio);
-
-		Respuesta response = api.getReporte(xApiKey, persona, xFullReport);
+		peticion.setPersona(persona);
+		
+		Respuesta response = api.getReporte(xApiKey, peticion);
 
 		Assert.assertTrue(response.getFolioConsulta() != null);
 		logger.info(response.toString());
 
-		if (response.getFolioConsulta() != null && !xFullReport) {
-			String folioConsulta = response.getFolioConsulta();
-
-			Consultas consultas = api.getConsultas(folioConsulta, xApiKey);
-			Assert.assertTrue(consultas.getConsultas() != null);
-			logger.info(consultas.toString());
-
-			Creditos creditos = api.getCreditos(folioConsulta, xApiKey);
-			Assert.assertTrue(creditos.getCreditos() != null);
-			logger.info(creditos.toString());
-
-			DomiciliosRespuesta domicilios = api.getDomicilios(folioConsulta, xApiKey);
-			Assert.assertTrue(domicilios.getDomicilios() != null);
-			logger.info(domicilios.toString());
-
-			Empleos empleos = api.getEmpleos(folioConsulta, xApiKey);
-			Assert.assertTrue(empleos.getEmpleos() != null);
-			logger.info(empleos.toString());
-
-			Scores scores = api.getScores(folioConsulta, xApiKey);
-			Assert.assertTrue(scores.getScores() != null);
-			logger.info(scores.toString());
-
-			Mensajes mensajes = api.getMensajes(folioConsulta, xApiKey);
-			Assert.assertTrue(mensajes.getMensajes() != null);
-			logger.info(mensajes.toString());
-		}
 	} catch (ApiException e) {
 		logger.error(e.getResponseBody());
 	}
-
+    
 }
 ```
 
