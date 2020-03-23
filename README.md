@@ -1,6 +1,6 @@
-# Simulación del Reporte FICO Extended Score
+# Simulación de FICO Extended Score
 
-Simula el reporte con score en el mercado mexicano que califica el nivel de cumplimiento de pago de un individuo considerando al grupo de personas con las que comparte domicilio.
+Simula la API de FICO Extended Score, la cual califica el nivel de cumplimiento de pago de un individuo considerando al grupo de personas con las que comparte domicilio.
 
 ## Requisitos
 

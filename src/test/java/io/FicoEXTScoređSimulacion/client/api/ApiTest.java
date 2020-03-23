@@ -54,7 +54,7 @@ public class ApiTest {
 			persona.setApellidoPaterno("OLIVOS");
 			persona.setApellidoMaterno("JIMENEZ");
 			persona.setApellidoAdicional(null);
-			persona.setNombres("HECTOR");
+			persona.setNombres("PEDRO");
 			persona.setFechaNacimiento("1966-05-13");
 			persona.setRFC("CUPU800825569");
 			persona.setCURP(null);
