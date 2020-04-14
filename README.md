@@ -1,4 +1,4 @@
-# Simulación de FICO Extended Score
+# fico-extended-score-simulacion-client-java
 
 Simula la API de FICO Extended Score, la cual califica el nivel de cumplimiento de pago de un individuo considerando al grupo de personas con las que comparte domicilio.
 
