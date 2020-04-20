@@ -17,7 +17,7 @@ public class Score {
   @SerializedName("valor")
   private Integer valor = null;
   @SerializedName("razones")
-  private List<CatalogoRazones> razones = null;
+  private List<String> razones = null;
   public Score nombreScore(String nombreScore) {
     this.nombreScore = nombreScore;
     return this;
